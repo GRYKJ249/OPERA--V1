@@ -8,6 +8,8 @@
 - واجهة المعاينة تستخدم المنفذ 5000.
 - الاتصال بقاعدة Replit PostgreSQL يتم عبر `DATABASE_URL` الذي يوفّره Replit.
 - `npm run db:init` يفحص اتصال القاعدة والمخطط فقط؛ الخادم لا ينشئ جداول عند التشغيل.
+- `npm run gitea:init` ينشئ مخطط Gitea المنفصل مرة واحدة داخل قاعدة PostgreSQL نفسها.
+- `npm run dev` يشغّل Opera وGitea؛ صفحة Gitea عبر `/gitea/` بعد تسجيل الدخول في Opera.
 - مصدر مخطط PostgreSQL: `database/schema.sql`.
 - لتشغيل فحوص قاعدة البيانات: `npm run db:test`.
 - لترجمة واجهة TypeScript بعد تعديل `src/`: `npm run build`.
@@ -19,6 +21,8 @@
 - `src/`: مصدر واجهة الموقع.
 - `assets/` و`pages/`: ملفات الموقع.
 - `server/`: خادم Node.js وواجهات الحسابات والمصادقة.
+- `gitea/theme-opera.css`: ألوان Gitea المتوافقة مع لوحة Opera.
+- `runtime/gitea/`: ملف Gitea التنفيذي وبياناته ومستودعات Git؛ لا يُرفع إلى Git.
 - `database/schema.sql`: مخطط PostgreSQL الحالي.
 - `database/postgresql-source/`: مصدر PostgreSQL الأصلي الذي كان في المشروع قبل استيراد Opera؛ محفوظ كمرجع منفصل وليس الخادم الذي يتصل به الموقع.
 - `database/legacy-sqlite-*`: ملفات SQLite القديمة المؤرشفة للرجوع إليها فقط.
@@ -31,3 +35,5 @@
 - اضبط `PUBLIC_URL` لروابط OAuth، و`TRUST_PROXY=1` عند التشغيل خلف وكيل موثوق.
 
 مخطط PostgreSQL الحالي يغطي جداول الموقع والمصادقة وعرضي الصلاحيات المستخدمين في الخادم. ملفات الترحيل والاختبارات الأصلية الخاصة بمشغلات SQLite وواجهاته محفوظة في `database/legacy-sqlite-*`؛ لم تُنقل كل تلك المشغلات والعروض بعد.
+
+Gitea الحقيقي يعمل على المنفذ الداخلي 3001 خلف خادم Opera، ويستخدم قاعدة `DATABASE_URL` نفسها داخل مخطط `gitea` حتى لا تتداخل جداول المشروع. ملفات مستودعات Git تبقى في `runtime/gitea/data/repositories` وليست داخل PostgreSQL؛ يلزم تخزين ملفات دائم مناسب قبل النشر، لأن ملفات نظام المشروع لا تبقى عبر إصدارات النشر.

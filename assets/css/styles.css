@@ -81,6 +81,7 @@ section.pg{padding-top:90px}
 .so{display:flex;flex-direction:column;gap:6px}.so a{transition:color .2s}.so a:hover{color:var(--b)}
 .brand{white-space:nowrap;flex-shrink:0}
 .login{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:14px;z-index:60;height:36px;padding:0 16px;font-size:13.5px;border-radius:12px;border:1px solid var(--ln);background:#05071acc;backdrop-filter:blur(12px);font-weight:700;transition:border-color .2s,background .2s}.login:hover{border-color:var(--fg);background:var(--fg);color:var(--bg)}
+.gitea-entry{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:104px;z-index:60;height:36px;display:flex;align-items:center;padding:0 15px;border:1px solid #6f7bff80;border-radius:12px;background:#0b0f2be8;color:var(--fg);font-size:13px;font-weight:700;text-decoration:none;backdrop-filter:blur(12px);transition:background .2s,border-color .2s,transform .2s}.gitea-entry:hover{border-color:#22e3c4;background:#22e3c4;color:#05071a;transform:translateY(-1px)}
 
 /* ===== ميزات v2 ===== */
 #ld{position:fixed;inset:0;z-index:300;background:var(--bg);display:grid;place-items:center;font:700 clamp(40px,12vw,100px) 'Reem Kufi',sans-serif;transition:opacity .6s,visibility .6s}#ld.done{opacity:0;visibility:hidden}#ld span{animation:pl 1s ease-in-out infinite alternate}@keyframes pl{to{letter-spacing:.2em;opacity:.5}}

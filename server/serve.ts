@@ -3,10 +3,11 @@ import { readFile, stat } from 'node:fs/promises';
 import { dirname, extname, join, normalize, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openDb, purgeExpired } from './db.ts';
-import { login, getSession, logout } from './auth.ts';
+import { login, getSession, logout, type SessionUser } from './auth.ts';
 import { register, verifyEmail, verifySignupCode, resendVerifyCode, requestReset, resetPassword, limited } from './accounts.ts';
 import { startOAuth, finishOAuth, isProvider, configured, oauthDiagnostics } from './oauth.ts';
 import { registerOptions, registerVerify, loginOptions, loginVerify } from './passkeys.ts';
+import { proxyGitea } from './gitea-proxy.ts';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PORT = Number(process.env.PORT ?? 5000);
@@ -188,6 +189,13 @@ const handleRequest = async (req: IncomingMessage, res: ServerResponse) => {
   try {
     const path = new URL(req.url ?? '/', 'http://x').pathname;
     if (path === '/auth/google/callback') return await api(req, res, '/api/auth/oauth/google/callback');
+    if (path === '/gitea' || path.startsWith('/gitea/')) {
+      const user: SessionUser | null = await getSession(db, cookieOf(req, 'op_session'));
+      return await proxyGitea(req, res, path, user, {
+        origin: originOf(req),
+        clientIp: clientIp(req),
+      });
+    }
     if (path.startsWith('/api/')) return await api(req, res, path);
     return await staticFile(res, path);
   } catch (e) {

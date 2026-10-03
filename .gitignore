@@ -7,3 +7,4 @@ node_modules/
 *.sqlite
 *.sqlite-*
 *.sqlite3
+/runtime/gitea/

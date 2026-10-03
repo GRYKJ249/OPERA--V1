@@ -5,6 +5,10 @@ const LG_DOMAINS = ['gmail.com', 'outlook.com', 'hotmail.com', 'yahoo.com', 'icl
 const LG_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const LG_KEY = 'op-email';
 const ROOT_HOME = '../index.html';
+const returnTarget = (): string => {
+  const target = new URLSearchParams(location.search).get('returnTo');
+  return target === '/gitea' || !!target?.startsWith('/gitea/') ? target : ROOT_HOME;
+};
 const ERR: Record<string, string> = {
   pending: 'حسابك لم يُفعَّل بعد. أدخل رمز التأكيد المرسل إلى بريدك.',
   invalid: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
@@ -123,7 +127,7 @@ export function initLogin(): void {
         if (r.ok) {
           msg.classList.remove('err'); msg.textContent = t(r.restored ? 'تمت استعادة حساب المالك وتسجيل دخولك. غيّر كلمة السر الآن.' : 'تم تسجيل الدخول.');
           pw.value = '';
-          setTimeout(() => { location.href = ROOT_HOME; }, r.restored ? 1800 : 500);
+          setTimeout(() => { location.href = r.restored ? ROOT_HOME : returnTarget(); }, r.restored ? 1800 : 500);
           return;
         }
         msg.classList.add('err'); msg.textContent = t(ERR[r.error] ?? ERR.network);
